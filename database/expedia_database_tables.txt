@@ -1,0 +1,500 @@
+STRUCTURE DE BASE DE DONNÉES EXPEDIA
+=====================================
+
+Liste complète des tables possibles basée sur l'analyse du site www.expedia.com
+
+================================================================================
+1. GESTION DES UTILISATEURS
+================================================================================
+
+- users
+  Informations de base des utilisateurs (email, mot de passe, nom, prénom, date de naissance)
+
+- user_profiles
+  Profils détaillés des utilisateurs (préférences, informations complémentaires)
+
+- user_addresses
+  Adresses des utilisateurs (facturation, livraison, etc.)
+
+- user_payment_methods
+  Méthodes de paiement enregistrées par les utilisateurs
+
+- user_preferences
+  Préférences utilisateurs (langue, devise, notifications, etc.)
+
+- user_sessions
+  Sessions actives des utilisateurs
+
+- user_authentication
+  Tokens d'authentification et informations de sécurité
+
+
+================================================================================
+2. PROGRAMME DE FIDÉLITÉ (ONEKEY)
+================================================================================
+
+- onekey_accounts
+  Comptes OneKey des utilisateurs
+
+- onekey_rewards
+  Points et récompenses accumulés
+
+- onekey_transactions
+  Historique des transactions de points
+
+- onekey_cards
+  Cartes de crédit OneKey
+
+- onekey_tiers
+  Niveaux de membres (Silver, Gold, Platinum, etc.)
+
+
+================================================================================
+3. HÉBERGEMENTS (HOTELS & VACATION RENTALS)
+================================================================================
+
+- properties
+  Propriétés (hôtels, locations de vacances, etc.)
+
+- property_types
+  Types de propriétés (hôtel, appartement, villa, maison, etc.)
+
+- property_categories
+  Catégories de propriétés (luxe, économique, milieu de gamme, etc.)
+
+- property_addresses
+  Adresses complètes des propriétés
+
+- property_amenities
+  Équipements des propriétés (piscine, wifi, parking, spa, etc.)
+
+- property_images
+  Images et photos des propriétés
+
+- property_descriptions
+  Descriptions des propriétés (multilingues)
+
+- rooms
+  Chambres et suites disponibles
+
+- room_types
+  Types de chambres (standard, deluxe, suite, etc.)
+
+- room_amenities
+  Équipements des chambres (TV, minibar, balcon, etc.)
+
+- room_availability
+  Disponibilités des chambres par date
+
+- room_pricing
+  Tarifs des chambres (par date, saison, etc.)
+
+- property_partners
+  Partenaires et propriétaires des biens
+
+- property_ratings
+  Notes moyennes des propriétés
+
+- property_reviews
+  Avis et commentaires sur les propriétés
+
+
+================================================================================
+4. VOLS
+================================================================================
+
+- airlines
+  Compagnies aériennes
+
+- airports
+  Aéroports (codes IATA, coordonnées, etc.)
+
+- flights
+  Vols disponibles
+
+- flight_routes
+  Itinéraires de vol (origine, destination)
+
+- flight_segments
+  Segments individuels d'un vol
+
+- flight_classes
+  Classes de vol (économique, business, première classe)
+
+- flight_availability
+  Disponibilités des vols
+
+- flight_pricing
+  Tarifs des vols
+
+- aircraft_types
+  Types d'avions
+
+
+================================================================================
+5. LOCATIONS DE VOITURES
+================================================================================
+
+- car_rental_companies
+  Agences de location de voitures
+
+- car_rental_locations
+  Points de location (aéroports, villes, etc.)
+
+- cars
+  Véhicules disponibles à la location
+
+- car_categories
+  Catégories de voitures (compacte, SUV, berline, etc.)
+
+- car_features
+  Caractéristiques des voitures (GPS, climatisation, etc.)
+
+- car_availability
+  Disponibilités des véhicules
+
+- car_pricing
+  Tarifs de location
+
+
+================================================================================
+6. CROISIÈRES
+================================================================================
+
+- cruise_lines
+  Compagnies de croisières
+
+- cruise_ships
+  Navires de croisière
+
+- cruises
+  Croisières disponibles
+
+- cruise_ports
+  Ports d'embarquement et de débarquement
+
+- cruise_cabins
+  Cabines disponibles
+
+- cruise_cabin_types
+  Types de cabines (intérieure, extérieure, suite, etc.)
+
+- cruise_itineraries
+  Itinéraires de croisière
+
+- cruise_pricing
+  Tarifs des croisières
+
+
+================================================================================
+7. ACTIVITÉS (THINGS TO DO)
+================================================================================
+
+- activities
+  Activités disponibles (visites, excursions, etc.)
+
+- activity_categories
+  Catégories d'activités (culture, sport, aventure, etc.)
+
+- activity_providers
+  Fournisseurs d'activités
+
+- activity_locations
+  Lieux où se déroulent les activités
+
+- activity_schedules
+  Horaires et disponibilités des activités
+
+- activity_pricing
+  Tarifs des activités
+
+
+================================================================================
+8. FORFAITS (PACKAGES)
+================================================================================
+
+- packages
+  Forfaits combinés (hôtel + vol, etc.)
+
+- package_components
+  Composants d'un forfait
+
+- package_types
+  Types de forfaits
+
+- package_pricing
+  Tarifs des forfaits
+
+
+================================================================================
+9. RÉSERVATIONS
+================================================================================
+
+- bookings
+  Réservations principales
+
+- booking_items
+  Éléments individuels d'une réservation
+
+- booking_statuses
+  Statuts des réservations (confirmé, annulé, en attente, etc.)
+
+- booking_guests
+  Informations sur les voyageurs
+
+- booking_rooms
+  Chambres réservées
+
+- booking_flights
+  Vols réservés
+
+- booking_cars
+  Voitures réservées
+
+- booking_activities
+  Activités réservées
+
+- booking_cruises
+  Croisières réservées
+
+
+================================================================================
+10. PAIEMENTS
+================================================================================
+
+- payments
+  Transactions de paiement
+
+- payment_methods
+  Méthodes de paiement (carte de crédit, PayPal, etc.)
+
+- payment_statuses
+  Statuts des paiements (réussi, échoué, remboursé, etc.)
+
+- refunds
+  Remboursements
+
+- invoices
+  Factures
+
+- payment_plans
+  Plans de paiement échelonnés
+
+
+================================================================================
+11. AVIS ET ÉVALUATIONS
+================================================================================
+
+- reviews
+  Avis clients sur les propriétés/services
+
+- review_ratings
+  Notes détaillées (propreté, service, emplacement, etc.)
+
+- review_helpful_votes
+  Votes "utile" sur les avis
+
+- review_photos
+  Photos ajoutées dans les avis
+
+- review_responses
+  Réponses des propriétaires aux avis
+
+
+================================================================================
+12. PROMOTIONS ET OFFRES
+================================================================================
+
+- promotions
+  Promotions actives
+
+- promotion_types
+  Types de promotions (Black Friday, saisonnières, etc.)
+
+- promotion_codes
+  Codes promotionnels
+
+- deals
+  Offres spéciales
+
+- discounts
+  Remises et réductions
+
+- coupons
+  Coupons de réduction
+
+
+================================================================================
+13. DESTINATIONS ET GÉOGRAPHIE
+================================================================================
+
+- destinations
+  Destinations touristiques
+
+- countries
+  Pays
+
+- regions
+  Régions et états
+
+- cities
+  Villes
+
+- landmarks
+  Points d'intérêt et attractions
+
+- coordinates
+  Coordonnées GPS
+
+
+================================================================================
+14. NOTIFICATIONS ET COMMUNICATION
+================================================================================
+
+- notifications
+  Notifications envoyées aux utilisateurs
+
+- messages
+  Messages entre utilisateurs, support, propriétaires
+
+- email_templates
+  Modèles d'emails
+
+- notification_preferences
+  Préférences de notifications par utilisateur
+
+
+================================================================================
+15. SUPPORT CLIENT
+================================================================================
+
+- support_tickets
+  Tickets de support
+
+- support_categories
+  Catégories de support (réservation, paiement, technique, etc.)
+
+- support_messages
+  Messages dans les tickets de support
+
+- faq
+  Questions fréquemment posées
+
+- help_articles
+  Articles d'aide et guides
+
+
+================================================================================
+16. PARTENAIRES ET FOURNISSEURS
+================================================================================
+
+- partners
+  Partenaires (hôtels, agences, etc.)
+
+- partner_contracts
+  Contrats avec les partenaires
+
+- partner_commissions
+  Commissions versées aux partenaires
+
+- partner_payments
+  Paiements aux partenaires
+
+
+================================================================================
+17. ANALYTICS ET TRACKING
+================================================================================
+
+- user_searches
+  Recherches effectuées par les utilisateurs
+
+- click_tracking
+  Suivi des clics sur le site
+
+- conversion_tracking
+  Suivi des conversions (réservations)
+
+- analytics_events
+  Événements analytics (pages vues, actions, etc.)
+
+
+================================================================================
+18. CONFIGURATION SYSTÈME
+================================================================================
+
+- currencies
+  Devises supportées
+
+- languages
+  Langues disponibles
+
+- timezones
+  Fuseaux horaires
+
+- settings
+  Paramètres système
+
+- api_keys
+  Clés API pour intégrations externes
+
+- webhooks
+  Configuration des webhooks
+
+
+================================================================================
+19. CONTENU ET MARKETING
+================================================================================
+
+- content_pages
+  Pages de contenu statique
+
+- blog_posts
+  Articles de blog
+
+- banners
+  Bannières publicitaires
+
+- campaigns
+  Campagnes marketing
+
+
+================================================================================
+20. SÉCURITÉ ET CONFORMITÉ
+================================================================================
+
+- audit_logs
+  Logs d'audit des actions système
+
+- security_events
+  Événements de sécurité
+
+- gdpr_requests
+  Demandes RGPD (accès, suppression de données)
+
+- data_retention
+  Politiques de rétention des données
+
+
+================================================================================
+NOTES IMPORTANTES
+================================================================================
+
+Cette liste est basée sur l'analyse des fonctionnalités visibles sur le site
+www.expedia.com et représente une estimation des tables nécessaires pour
+gérer un système de réservation de voyage complet.
+
+La structure réelle de la base de données d'Expedia peut varier selon :
+- L'architecture technique choisie
+- Les besoins métier spécifiques
+- Les contraintes de performance
+- Les choix d'implémentation
+
+Cette liste peut servir de référence pour créer une base de données similaire
+ou comprendre l'organisation possible des données dans un système de réservation
+de voyages.
+
+================================================================================
+Date de création : 2025
+Source : Analyse du site www.expedia.com
+================================================================================
+
