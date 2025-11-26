@@ -9,5 +9,7 @@ urlpatterns = [
     path('api/users/', include('users.urls')),
     path('api/onekey/', include('onekey.urls')),
     path('api/accommodations/', include('accommodations.urls')),
+    path('api/flights/', include('flights.urls')),
+    path('api/car-rentals/', include('car_rentals.urls')),
 ]
 

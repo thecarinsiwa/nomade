@@ -17,7 +17,7 @@ class UserViewSet(viewsets.ModelViewSet):
     """ViewSet pour la gestion des utilisateurs"""
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     
     def get_serializer_class(self):
         if self.action == 'retrieve':
@@ -30,8 +30,14 @@ class UserViewSet(viewsets.ModelViewSet):
         """Permissions personnalisées selon l'action"""
         if self.action == 'create' or self.action == 'register':
             return [permissions.AllowAny()]
+        elif self.action == 'login':
+            return [permissions.AllowAny()]
         elif self.action == 'me':
             return [permissions.IsAuthenticated()]
+        elif self.action in ['list', 'retrieve']:
+            # Permettre la lecture sans authentification
+            return [permissions.AllowAny()]
+        # Pour les modifications (update, partial_update, destroy), exiger l'authentification
         return [permissions.IsAuthenticated()]
     
     @action(detail=False, methods=['post'], permission_classes=[permissions.AllowAny])
@@ -109,11 +115,14 @@ class UserProfileViewSet(viewsets.ModelViewSet):
     """ViewSet pour la gestion des profils utilisateur"""
     queryset = UserProfile.objects.all()
     serializer_class = UserProfileSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     
     def get_queryset(self):
-        """Retourner uniquement le profil de l'utilisateur connecté"""
-        return UserProfile.objects.filter(user=self.request.user)
+        """Retourner uniquement le profil de l'utilisateur connecté si authentifié"""
+        if self.request.user.is_authenticated:
+            return UserProfile.objects.filter(user=self.request.user)
+        # Si non authentifié, retourner un queryset vide pour la sécurité
+        return UserProfile.objects.none()
     
     def perform_create(self, serializer):
         """Créer un profil pour l'utilisateur connecté"""
@@ -138,11 +147,14 @@ class UserAddressViewSet(viewsets.ModelViewSet):
     """ViewSet pour la gestion des adresses utilisateur"""
     queryset = UserAddress.objects.all()
     serializer_class = UserAddressSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     
     def get_queryset(self):
-        """Retourner uniquement les adresses de l'utilisateur connecté"""
-        return UserAddress.objects.filter(user=self.request.user)
+        """Retourner uniquement les adresses de l'utilisateur connecté si authentifié"""
+        if self.request.user.is_authenticated:
+            return UserAddress.objects.filter(user=self.request.user)
+        # Si non authentifié, retourner un queryset vide pour la sécurité
+        return UserAddress.objects.none()
     
     def perform_create(self, serializer):
         """Créer une adresse pour l'utilisateur connecté"""
@@ -153,11 +165,14 @@ class UserPaymentMethodViewSet(viewsets.ModelViewSet):
     """ViewSet pour la gestion des méthodes de paiement"""
     queryset = UserPaymentMethod.objects.all()
     serializer_class = UserPaymentMethodSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     
     def get_queryset(self):
-        """Retourner uniquement les méthodes de paiement de l'utilisateur connecté"""
-        return UserPaymentMethod.objects.filter(user=self.request.user, is_active=True)
+        """Retourner uniquement les méthodes de paiement de l'utilisateur connecté si authentifié"""
+        if self.request.user.is_authenticated:
+            return UserPaymentMethod.objects.filter(user=self.request.user, is_active=True)
+        # Si non authentifié, retourner un queryset vide pour la sécurité
+        return UserPaymentMethod.objects.none()
     
     def perform_create(self, serializer):
         """Créer une méthode de paiement pour l'utilisateur connecté"""
@@ -173,11 +188,14 @@ class UserSessionViewSet(viewsets.ReadOnlyModelViewSet):
     """ViewSet pour la gestion des sessions utilisateur (lecture seule)"""
     queryset = UserSession.objects.all()
     serializer_class = UserSessionSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     
     def get_queryset(self):
-        """Retourner uniquement les sessions de l'utilisateur connecté"""
-        return UserSession.objects.filter(user=self.request.user)
+        """Retourner uniquement les sessions de l'utilisateur connecté si authentifié"""
+        if self.request.user.is_authenticated:
+            return UserSession.objects.filter(user=self.request.user)
+        # Si non authentifié, retourner un queryset vide pour la sécurité
+        return UserSession.objects.none()
     
     @action(detail=True, methods=['delete'])
     def revoke(self, request, pk=None):
