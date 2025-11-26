@@ -38,6 +38,19 @@ INSTALLED_APPS = [
     'accommodations',
     'flights',
     'car_rentals',
+    'cruises',
+    'tour_activities',
+    'packages',
+    'bookings',
+    'payment_processing',
+    'reviews',
+    'promotions',
+    'destinations',
+    'notifications',
+    'support',
+    'system_config',
+    'analytics',
+    'security',
 ]
 
 MIDDLEWARE = [
