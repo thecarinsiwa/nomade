@@ -1,0 +1,45 @@
+{
+  "name": "nomade-client",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@hookform/resolvers": "^3.3.0",
+    "@radix-ui/react-slider": "^1.1.2",
+    "@types/leaflet": "^1.9.8",
+    "@types/node": "^20.11.0",
+    "@types/react": "^18.3.0",
+    "@types/react-datepicker": "^4.19.0",
+    "@types/react-dom": "^18.3.0",
+    "autoprefixer": "^10.4.0",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.0",
+    "date-fns": "^3.3.0",
+    "embla-carousel-react": "^8.0.0",
+    "framer-motion": "^11.0.0",
+    "leaflet": "^1.9.4",
+    "lucide-react": "^0.344.0",
+    "next": "^14.2.0",
+    "postcss": "^8.4.0",
+    "react": "^18.3.0",
+    "react-datepicker": "^4.25.0",
+    "react-dom": "^18.3.0",
+    "react-hook-form": "^7.50.0",
+    "react-leaflet": "^4.2.1",
+    "recharts": "^2.10.0",
+    "tailwind-merge": "^2.2.0",
+    "tailwindcss": "^3.4.0",
+    "tailwindcss-animate": "^1.0.7",
+    "typescript": "^5.4.0",
+    "zod": "^3.22.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.57.0",
+    "eslint-config-next": "^16.0.5"
+  }
+}
