@@ -116,18 +116,56 @@ export default function DeleteUserPage() {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
-            <div className="space-y-2">
-              <p className="text-sm font-medium">Vous êtes sur le point de supprimer :</p>
-              <div className="bg-muted p-4 rounded-lg space-y-2">
-                <p className="font-medium">{user.email}</p>
-                {user.first_name || user.last_name && (
+            <div className="space-y-4">
+              <div>
+                <p className="text-sm font-medium mb-2">Informations de l'utilisateur :</p>
+                <div className="bg-muted p-4 rounded-lg space-y-2">
+                  <p className="font-medium">{user.email}</p>
+                  {(user.first_name || user.last_name) && (
+                    <p className="text-sm text-muted-foreground">
+                      {user.first_name} {user.last_name}
+                    </p>
+                  )}
                   <p className="text-sm text-muted-foreground">
-                    {user.first_name} {user.last_name}
+                    Statut: {user.status}
                   </p>
+                </div>
+              </div>
+
+              {/* Afficher les relations */}
+              <div className="space-y-3">
+                {user.profile && (
+                  <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 p-3 rounded-lg">
+                    <p className="text-sm font-medium text-yellow-900 dark:text-yellow-100">
+                      ⚠️ Profil associé
+                    </p>
+                    <p className="text-xs text-yellow-700 dark:text-yellow-300">
+                      Un profil utilisateur sera également supprimé
+                    </p>
+                  </div>
                 )}
-                <p className="text-sm text-muted-foreground">
-                  Statut: {user.status}
-                </p>
+
+                {user.addresses && user.addresses.length > 0 && (
+                  <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 p-3 rounded-lg">
+                    <p className="text-sm font-medium text-yellow-900 dark:text-yellow-100">
+                      ⚠️ {user.addresses.length} adresse(s) associée(s)
+                    </p>
+                    <p className="text-xs text-yellow-700 dark:text-yellow-300">
+                      Toutes les adresses seront également supprimées
+                    </p>
+                  </div>
+                )}
+
+                {user.payment_methods && user.payment_methods.length > 0 && (
+                  <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 p-3 rounded-lg">
+                    <p className="text-sm font-medium text-yellow-900 dark:text-yellow-100">
+                      ⚠️ {user.payment_methods.length} méthode(s) de paiement associée(s)
+                    </p>
+                    <p className="text-xs text-yellow-700 dark:text-yellow-300">
+                      Toutes les méthodes de paiement seront également supprimées
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
 

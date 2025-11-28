@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react"
 import { useRouter, useParams } from "next/navigation"
 import { motion } from "framer-motion"
-import { ArrowLeft, Edit, Trash2, Loader2 } from "lucide-react"
+import { ArrowLeft, Edit, Trash2, Loader2, Plus } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -165,12 +165,29 @@ export default function ViewUserPage() {
           </Card>
 
           {/* Profil */}
-          {user.profile && (
-            <Card>
-              <CardHeader>
+          <Card>
+            <CardHeader>
+              <div className="flex items-center justify-between">
                 <CardTitle>Profil</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
+                {user.profile ? (
+                  <Link href={`/users/profiles/edit/${user.profile.id}`}>
+                    <Button variant="outline" size="sm">
+                      <Edit className="h-4 w-4 mr-2" />
+                      Modifier
+                    </Button>
+                  </Link>
+                ) : (
+                  <Link href={`/users/profiles/add?userId=${user.id}`}>
+                    <Button variant="outline" size="sm">
+                      <Plus className="h-4 w-4 mr-2" />
+                      Créer
+                    </Button>
+                  </Link>
+                )}
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {user.profile ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <p className="text-sm text-muted-foreground">Langue préférée</p>
@@ -184,23 +201,57 @@ export default function ViewUserPage() {
                     <p className="text-sm text-muted-foreground">Fuseau horaire</p>
                     <p className="font-medium">{user.profile.timezone || "-"}</p>
                   </div>
+                  {Object.keys(user.profile.notification_preferences || {}).length > 0 && (
+                    <div className="md:col-span-2">
+                      <p className="text-sm text-muted-foreground mb-2">Préférences de notification</p>
+                      <pre className="bg-muted p-3 rounded-lg text-xs overflow-auto">
+                        {JSON.stringify(user.profile.notification_preferences, null, 2)}
+                      </pre>
+                    </div>
+                  )}
                 </div>
-              </CardContent>
-            </Card>
-          )}
+              ) : (
+                <p className="text-sm text-muted-foreground text-center py-4">
+                  Aucun profil créé
+                </p>
+              )}
+            </CardContent>
+          </Card>
 
           {/* Adresses */}
-          {user.addresses && user.addresses.length > 0 && (
-            <Card>
-              <CardHeader>
-                <CardTitle>Adresses ({user.addresses.length})</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                {user.addresses.map((address) => (
+          <Card>
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <CardTitle>Adresses ({user.addresses?.length || 0})</CardTitle>
+                <Link href={`/users/addresses/add?userId=${user.id}`}>
+                  <Button variant="outline" size="sm">
+                    <Plus className="h-4 w-4 mr-2" />
+                    Ajouter
+                  </Button>
+                </Link>
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {user.addresses && user.addresses.length > 0 ? (
+                user.addresses.map((address) => (
                   <div key={address.id} className="border rounded-lg p-4">
                     <div className="flex items-center justify-between mb-2">
-                      <Badge variant="outline">{address.address_type}</Badge>
-                      {address.is_default && <Badge variant="default">Par défaut</Badge>}
+                      <div className="flex space-x-2">
+                        <Badge variant="outline">{address.address_type}</Badge>
+                        {address.is_default && <Badge variant="default">Par défaut</Badge>}
+                      </div>
+                      <div className="flex space-x-2">
+                        <Link href={`/users/addresses/edit/${address.id}`}>
+                          <Button variant="ghost" size="icon">
+                            <Edit className="h-4 w-4" />
+                          </Button>
+                        </Link>
+                        <Link href={`/users/addresses/delete/${address.id}`}>
+                          <Button variant="ghost" size="icon">
+                            <Trash2 className="h-4 w-4 text-destructive" />
+                          </Button>
+                        </Link>
+                      </div>
                     </div>
                     <p className="text-sm">
                       {address.street && `${address.street}, `}
@@ -209,29 +260,53 @@ export default function ViewUserPage() {
                       {address.country}
                     </p>
                   </div>
-                ))}
-              </CardContent>
-            </Card>
-          )}
+                ))
+              ) : (
+                <p className="text-sm text-muted-foreground text-center py-4">
+                  Aucune adresse enregistrée
+                </p>
+              )}
+            </CardContent>
+          </Card>
 
           {/* Méthodes de paiement */}
-          {user.payment_methods && user.payment_methods.length > 0 && (
-            <Card>
-              <CardHeader>
-                <CardTitle>Méthodes de paiement ({user.payment_methods.length})</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                {user.payment_methods.map((method) => (
+          <Card>
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <CardTitle>Méthodes de paiement ({user.payment_methods?.length || 0})</CardTitle>
+                <Link href={`/users/payment-methods/add?userId=${user.id}`}>
+                  <Button variant="outline" size="sm">
+                    <Plus className="h-4 w-4 mr-2" />
+                    Ajouter
+                  </Button>
+                </Link>
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {user.payment_methods && user.payment_methods.length > 0 ? (
+                user.payment_methods.map((method) => (
                   <div key={method.id} className="border rounded-lg p-4">
                     <div className="flex items-center justify-between mb-2">
-                      <Badge variant="outline">{method.payment_type}</Badge>
                       <div className="flex space-x-2">
+                        <Badge variant="outline">{method.payment_type}</Badge>
                         {method.is_default && <Badge variant="default">Par défaut</Badge>}
                         {method.is_active ? (
                           <Badge variant="success">Actif</Badge>
                         ) : (
                           <Badge variant="secondary">Inactif</Badge>
                         )}
+                      </div>
+                      <div className="flex space-x-2">
+                        <Link href={`/users/payment-methods/edit/${method.id}`}>
+                          <Button variant="ghost" size="icon">
+                            <Edit className="h-4 w-4" />
+                          </Button>
+                        </Link>
+                        <Link href={`/users/payment-methods/delete/${method.id}`}>
+                          <Button variant="ghost" size="icon">
+                            <Trash2 className="h-4 w-4 text-destructive" />
+                          </Button>
+                        </Link>
                       </div>
                     </div>
                     {method.card_last_four && (
@@ -240,10 +315,14 @@ export default function ViewUserPage() {
                       </p>
                     )}
                   </div>
-                ))}
-              </CardContent>
-            </Card>
-          )}
+                ))
+              ) : (
+                <p className="text-sm text-muted-foreground text-center py-4">
+                  Aucune méthode de paiement enregistrée
+                </p>
+              )}
+            </CardContent>
+          </Card>
         </div>
       </div>
     </AdminLayout>

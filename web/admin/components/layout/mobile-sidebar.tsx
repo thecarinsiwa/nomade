@@ -86,12 +86,12 @@ const menuSections: MenuItem[] = [
     title: "Travel Products",
     icon: Package,
     children: [
-      { title: "Accommodations", href: "/products/accommodations", icon: Building },
-      { title: "Flights", href: "/products/flights", icon: Plane },
-      { title: "Car Rentals", href: "/products/car-rentals", icon: Car },
-      { title: "Cruises", href: "/products/cruises", icon: Ship },
-      { title: "Activities", href: "/products/activities", icon: Activity },
-      { title: "Packages", href: "/products/packages", icon: Package },
+      { title: "Accommodations", href: "/travel-products/accommodations", icon: Building },
+      { title: "Flights", href: "/travel-products/flights", icon: Plane },
+      { title: "Car Rentals", href: "/travel-products/car-rentals", icon: Car },
+      { title: "Cruises", href: "/travel-products/cruises", icon: Ship },
+      { title: "Activities", href: "/travel-products/activities", icon: Activity },
+      { title: "Packages", href: "/travel-products/packages", icon: Package },
     ],
   },
   {
@@ -150,7 +150,7 @@ function MobileSidebarItem({ item, pathname, level = 0, onLinkClick }: MobileSid
   const Icon = item.icon
   const isActive = item.href ? pathname === item.href || pathname.startsWith(item.href + "/") : false
 
-  if (hasChildren) {
+  if (hasChildren && item.children) {
     return (
       <Collapsible open={isOpen} onOpenChange={setIsOpen}>
         <CollapsibleTrigger asChild>

@@ -3,11 +3,11 @@
 import { useEffect, useState } from "react"
 import { useRouter, useParams } from "next/navigation"
 import { motion } from "framer-motion"
-import { ArrowLeft, Loader2 } from "lucide-react"
+import { ArrowLeft, Loader2, Edit } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { AdminLayout } from "@/components/layout/admin-layout"
-import { UserForm } from "@/components/users/user-form"
+import { EnhancedUserForm } from "@/components/users/enhanced-user-form"
 import { usersService } from "@/lib/services/users"
 import { User } from "@/types"
 import { useToast } from "@/hooks/use-toast"
@@ -46,10 +46,6 @@ export default function EditUserPage() {
   }, [userId, router, toast])
 
   const handleSuccess = () => {
-    toast({
-      title: "Succès",
-      description: "Utilisateur mis à jour avec succès",
-    })
     router.push("/users")
   }
 
@@ -85,21 +81,28 @@ export default function EditUserPage() {
               Retour à la liste
             </Button>
           </Link>
-          <h1 className="text-3xl font-bold">Modifier l'utilisateur</h1>
-          <p className="text-muted-foreground">
-            Modifiez les informations de l'utilisateur {user.email}
-          </p>
+          <div className="flex items-center space-x-3">
+            <div className="rounded-lg bg-primary/10 p-3">
+              <Edit className="h-6 w-6 text-primary" />
+            </div>
+            <div>
+              <h1 className="text-3xl font-bold">Modifier l'utilisateur</h1>
+              <p className="text-muted-foreground">
+                Modifiez les informations de l'utilisateur {user.email} et ses données complémentaires
+              </p>
+            </div>
+          </div>
         </motion.div>
 
         <Card>
           <CardHeader>
-            <CardTitle>Informations de l'utilisateur</CardTitle>
+            <CardTitle>Informations complètes de l'utilisateur</CardTitle>
             <CardDescription>
-              Modifiez les champs nécessaires. Laissez le mot de passe vide pour ne pas le changer.
+              Utilisez les onglets pour modifier toutes les informations. Laissez le mot de passe vide pour ne pas le changer.
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <UserForm user={user} onSuccess={handleSuccess} onCancel={handleCancel} />
+            <EnhancedUserForm user={user} onSuccess={handleSuccess} onCancel={handleCancel} />
           </CardContent>
         </Card>
       </div>

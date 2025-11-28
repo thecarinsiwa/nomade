@@ -2,23 +2,17 @@
 
 import { useRouter } from "next/navigation"
 import { motion } from "framer-motion"
-import { ArrowLeft, Loader2 } from "lucide-react"
+import { ArrowLeft, UserPlus } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { AdminLayout } from "@/components/layout/admin-layout"
-import { UserForm } from "@/components/users/user-form"
-import { useToast } from "@/hooks/use-toast"
+import { EnhancedUserForm } from "@/components/users/enhanced-user-form"
 import Link from "next/link"
 
 export default function AddUserPage() {
   const router = useRouter()
-  const { toast } = useToast()
 
   const handleSuccess = () => {
-    toast({
-      title: "Succès",
-      description: "Utilisateur créé avec succès",
-    })
     router.push("/users")
   }
 
@@ -40,21 +34,28 @@ export default function AddUserPage() {
               Retour à la liste
             </Button>
           </Link>
-          <h1 className="text-3xl font-bold">Créer un nouvel utilisateur</h1>
-          <p className="text-muted-foreground">
-            Remplissez les informations pour créer un nouvel utilisateur
-          </p>
+          <div className="flex items-center space-x-3">
+            <div className="rounded-lg bg-primary/10 p-3">
+              <UserPlus className="h-6 w-6 text-primary" />
+            </div>
+            <div>
+              <h1 className="text-3xl font-bold">Créer un nouvel utilisateur</h1>
+              <p className="text-muted-foreground">
+                Créez un utilisateur avec ses informations complémentaires (profil, adresses, méthodes de paiement)
+              </p>
+            </div>
+          </div>
         </motion.div>
 
         <Card>
           <CardHeader>
-            <CardTitle>Informations de l'utilisateur</CardTitle>
+            <CardTitle>Informations complètes de l'utilisateur</CardTitle>
             <CardDescription>
-              Tous les champs marqués d'un astérisque (*) sont obligatoires
+              Utilisez les onglets pour remplir toutes les informations. Les champs marqués d'un astérisque (*) sont obligatoires.
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <UserForm user={null} onSuccess={handleSuccess} onCancel={handleCancel} />
+            <EnhancedUserForm user={null} onSuccess={handleSuccess} onCancel={handleCancel} />
           </CardContent>
         </Card>
       </div>

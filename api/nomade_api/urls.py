@@ -24,5 +24,6 @@ urlpatterns = [
     path('api/system-config/', include('system_config.urls')),
     path('api/analytics/', include('analytics.urls')),
     path('api/security/', include('security.urls')),
+    path('api/images/', include('images.urls')),
 ]
 

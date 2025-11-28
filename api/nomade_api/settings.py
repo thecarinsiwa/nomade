@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'system_config',
     'analytics',
     'security',
+    'images',
 ]
 
 MIDDLEWARE = [

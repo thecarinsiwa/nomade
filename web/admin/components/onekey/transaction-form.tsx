@@ -1,0 +1,208 @@
+"use client"
+
+import { useState, useEffect } from "react"
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import * as z from "zod"
+import { Loader2 } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import { Textarea } from "@/components/ui/textarea"
+import { onekeyTransactionsService } from "@/lib/services/onekey-transactions"
+import { onekeyAccountsService } from "@/lib/services/onekey-accounts"
+import { OneKeyTransaction, OneKeyAccount } from "@/types"
+import { useToast } from "@/hooks/use-toast"
+
+const transactionSchema = z.object({
+  onekey_account: z.string().uuid("Sélectionnez un compte"),
+  transaction_type: z.enum(["earn", "redeem", "expire", "adjustment"]),
+  points: z.number().min(1, "Les points doivent être positifs"),
+  booking_id: z.string().uuid().optional().or(z.literal("")),
+  description: z.string().optional(),
+})
+
+type TransactionFormData = z.infer<typeof transactionSchema>
+
+interface TransactionFormProps {
+  transaction: OneKeyTransaction | null
+  onSuccess: () => void
+  onCancel: () => void
+}
+
+export function TransactionForm({ transaction, onSuccess, onCancel }: TransactionFormProps) {
+  const [isLoading, setIsLoading] = useState(false)
+  const [accounts, setAccounts] = useState<OneKeyAccount[]>([])
+  const [isLoadingAccounts, setIsLoadingAccounts] = useState(false)
+  const { toast } = useToast()
+
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useForm<TransactionFormData>({
+    resolver: zodResolver(transactionSchema),
+    defaultValues: {
+      onekey_account: transaction?.onekey_account || "",
+      transaction_type: transaction?.transaction_type || "earn",
+      points: transaction?.points || 0,
+      booking_id: transaction?.booking_id || "",
+      description: transaction?.description || "",
+    },
+  })
+
+  const account = watch("onekey_account")
+  const transactionType = watch("transaction_type")
+
+  useEffect(() => {
+    const fetchAccounts = async () => {
+      try {
+        setIsLoadingAccounts(true)
+        const data = await onekeyAccountsService.getAllAccounts(1)
+        setAccounts(data.results || [])
+      } catch (error) {
+        console.error("Error fetching accounts:", error)
+      } finally {
+        setIsLoadingAccounts(false)
+      }
+    }
+    fetchAccounts()
+  }, [])
+
+  const onSubmit = async (data: TransactionFormData) => {
+    setIsLoading(true)
+    try {
+      const submitData = { ...data }
+      if (!submitData.booking_id) {
+        delete submitData.booking_id
+      }
+      
+      if (transaction) {
+        await onekeyTransactionsService.updateTransaction(transaction.id, submitData)
+        toast({
+          title: "Succès",
+          description: "Transaction mise à jour avec succès",
+        })
+      } else {
+        await onekeyTransactionsService.createTransaction(submitData)
+        toast({
+          title: "Succès",
+          description: "Transaction créée avec succès",
+        })
+      }
+      onSuccess()
+    } catch (error: any) {
+      toast({
+        title: "Erreur",
+        description: error.response?.data?.detail || "Une erreur est survenue",
+        variant: "destructive",
+      })
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      <div className="space-y-2">
+        <Label htmlFor="onekey_account">Compte OneKey *</Label>
+        <Select value={account} onValueChange={(value) => setValue("onekey_account", value)}>
+          <SelectTrigger>
+            <SelectValue placeholder="Sélectionner un compte" />
+          </SelectTrigger>
+          <SelectContent>
+            {isLoadingAccounts ? (
+              <SelectItem value="loading" disabled>Chargement...</SelectItem>
+            ) : (
+              accounts.map((acc) => (
+                <SelectItem key={acc.id} value={acc.id}>
+                  {acc.onekey_number} - {acc.user_email || acc.user}
+                </SelectItem>
+              ))
+            )}
+          </SelectContent>
+        </Select>
+        {errors.onekey_account && (
+          <p className="text-sm text-destructive">{errors.onekey_account.message}</p>
+        )}
+      </div>
+
+      <div className="grid grid-cols-2 gap-4">
+        <div className="space-y-2">
+          <Label htmlFor="transaction_type">Type *</Label>
+          <Select
+            value={transactionType}
+            onValueChange={(value) => setValue("transaction_type", value as any)}
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Sélectionner un type" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="earn">Gain</SelectItem>
+              <SelectItem value="redeem">Utilisation</SelectItem>
+              <SelectItem value="expire">Expiration</SelectItem>
+              <SelectItem value="adjustment">Ajustement</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="points">Points *</Label>
+          <Input
+            id="points"
+            type="number"
+            min="1"
+            {...register("points", { valueAsNumber: true })}
+          />
+          {errors.points && (
+            <p className="text-sm text-destructive">{errors.points.message}</p>
+          )}
+        </div>
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="booking_id">ID Réservation (UUID)</Label>
+        <Input
+          id="booking_id"
+          placeholder="UUID de la réservation (optionnel)"
+          {...register("booking_id")}
+        />
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="description">Description</Label>
+        <Textarea
+          id="description"
+          {...register("description")}
+          placeholder="Description de la transaction..."
+        />
+      </div>
+
+      <div className="flex justify-end space-x-2 pt-4">
+        <Button type="button" variant="outline" onClick={onCancel}>
+          Annuler
+        </Button>
+        <Button type="submit" disabled={isLoading}>
+          {isLoading ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              {transaction ? "Mise à jour..." : "Création..."}
+            </>
+          ) : (
+            transaction ? "Mettre à jour" : "Créer"
+          )}
+        </Button>
+      </div>
+    </form>
+  )
+}
+
