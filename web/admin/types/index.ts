@@ -550,6 +550,8 @@ export interface CruiseLine {
   name: string
   logo_url?: string
   description?: string
+  ships_count?: number
+  cruises_count?: number
   created_at: string
 }
 
@@ -560,7 +562,22 @@ export interface CruiseShip {
   name: string
   capacity?: number
   year_built?: number
+  cruises_count?: number
   created_at: string
+}
+
+export interface CruiseShipImage {
+  id: string
+  cruise_ship: string
+  cruise_ship_name?: string
+  image_url: string
+  image_type: 'main' | 'exterior' | 'deck' | 'pool' | 'restaurant' | 'cabin' | 'entertainment' | 'spa' | 'other'
+  display_order: number
+  alt_text?: string
+  is_primary: boolean
+  caption?: string
+  created_at: string
+  updated_at: string
 }
 
 export interface CruisePort {
@@ -570,6 +587,8 @@ export interface CruisePort {
   country?: string
   latitude?: number
   longitude?: number
+  departure_cruises_count?: number
+  arrival_cruises_count?: number
   created_at: string
 }
 
@@ -584,10 +603,26 @@ export interface Cruise {
   departure_port_name?: string
   arrival_port?: string
   arrival_port_name?: string
-  departure_date: string
-  arrival_date: string
+  start_date?: string
+  end_date?: string
+  departure_date?: string
+  arrival_date?: string
   duration_days?: number
   status: 'scheduled' | 'in_progress' | 'completed' | 'cancelled'
+  created_at: string
+  updated_at: string
+}
+
+export interface CruiseImage {
+  id: string
+  cruise: string
+  cruise_name?: string
+  image_url: string
+  image_type: 'main' | 'itinerary' | 'destination' | 'excursion' | 'other'
+  display_order: number
+  alt_text?: string
+  is_primary: boolean
+  caption?: string
   created_at: string
   updated_at: string
 }
@@ -596,6 +631,7 @@ export interface CruiseCabinType {
   id: string
   name: string
   description?: string
+  cabins_count?: number
   created_at: string
 }
 

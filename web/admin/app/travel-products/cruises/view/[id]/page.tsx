@@ -9,6 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { AdminLayout } from "@/components/layout/admin-layout"
 import { cruisesService } from "@/lib/services/cruises"
+import { CruiseImageGallery } from "@/components/cruises/cruise-image-gallery"
 import { Cruise } from "@/types"
 import { useToast } from "@/hooks/use-toast"
 import { formatDate, formatDateTime } from "@/lib/utils"
@@ -171,6 +172,9 @@ export default function ViewCruisePage() {
             </div>
           </CardContent>
         </Card>
+
+        {/* Galerie d'images */}
+        <CruiseImageGallery cruiseId={cruise.id} readonly={true} />
       </div>
     </AdminLayout>
   )

@@ -3,55 +3,54 @@
 import { useEffect, useState } from "react"
 import { useRouter, useParams } from "next/navigation"
 import { motion } from "framer-motion"
-import { ArrowLeft, Loader2 } from "lucide-react"
+import { ArrowLeft, Loader2, Edit, Anchor } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { AdminLayout } from "@/components/layout/admin-layout"
-import { CruiseForm } from "@/components/cruises/cruise-form"
-import { CruiseImageGallery } from "@/components/cruises/cruise-image-gallery"
-import { cruisesService } from "@/lib/services/cruises"
-import { Cruise } from "@/types"
+import { CruiseLineForm } from "@/components/cruises/cruise-line-form"
+import { cruiseLinesService } from "@/lib/services/cruises"
+import { CruiseLine } from "@/types"
 import { useToast } from "@/hooks/use-toast"
 import Link from "next/link"
 
-export default function EditCruisePage() {
+export default function EditCruiseLinePage() {
   const params = useParams()
   const router = useRouter()
   const { toast } = useToast()
-  const [cruise, setCruise] = useState<Cruise | null>(null)
+  const [cruiseLine, setCruiseLine] = useState<CruiseLine | null>(null)
   const [isLoading, setIsLoading] = useState(true)
 
-  const cruiseId = params.id as string
+  const cruiseLineId = params.id as string
 
   useEffect(() => {
-    const fetchCruise = async () => {
+    const fetchCruiseLine = async () => {
       try {
         setIsLoading(true)
-        const data = await cruisesService.getById(cruiseId)
-        setCruise(data)
+        const data = await cruiseLinesService.getById(cruiseLineId)
+        setCruiseLine(data)
       } catch (error) {
         toast({
           title: "Erreur",
-          description: "Impossible de charger la croisière",
+          description: "Impossible de charger la compagnie",
           variant: "destructive",
         })
-        router.push("/travel-products/cruises")
+        router.push("/travel-products/cruises/cruise-lines")
       } finally {
         setIsLoading(false)
       }
     }
 
-    if (cruiseId) {
-      fetchCruise()
+    if (cruiseLineId) {
+      fetchCruiseLine()
     }
-  }, [cruiseId, router, toast])
+  }, [cruiseLineId, router, toast])
 
   const handleSuccess = () => {
-    router.push("/travel-products/cruises")
+    router.push("/travel-products/cruises/cruise-lines")
   }
 
   const handleCancel = () => {
-    router.push("/travel-products/cruises")
+    router.push("/travel-products/cruises/cruise-lines")
   }
 
   if (isLoading) {
@@ -64,7 +63,7 @@ export default function EditCruisePage() {
     )
   }
 
-  if (!cruise) {
+  if (!cruiseLine) {
     return null
   }
 
@@ -76,32 +75,39 @@ export default function EditCruisePage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <Link href="/travel-products/cruises">
+          <Link href="/travel-products/cruises/cruise-lines">
             <Button variant="ghost" className="mb-4">
               <ArrowLeft className="mr-2 h-4 w-4" />
               Retour à la liste
             </Button>
           </Link>
-          <h1 className="text-3xl font-bold">Modifier la croisière</h1>
-          <p className="text-muted-foreground">
-            Modifiez les informations de {cruise.name}
-          </p>
+          <div className="flex items-center space-x-3 mb-2">
+            <div className="bg-purple-100 p-2 rounded-lg">
+              <Edit className="h-6 w-6 text-purple-600" />
+            </div>
+            <div>
+              <h1 className="text-3xl font-bold">Modifier la compagnie</h1>
+              <p className="text-muted-foreground">
+                Modifiez les informations de {cruiseLine.name}
+              </p>
+            </div>
+          </div>
         </motion.div>
 
         <Card>
           <CardHeader>
-            <CardTitle>Informations de la croisière</CardTitle>
+            <CardTitle className="flex items-center space-x-2">
+              <Anchor className="h-5 w-5" />
+              <span>Informations de la compagnie</span>
+            </CardTitle>
             <CardDescription>
-              Modifiez les champs nécessaires
+              Modifiez les champs nécessaires. Les champs marqués d'un astérisque (*) sont obligatoires.
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <CruiseForm cruise={cruise} onSuccess={handleSuccess} onCancel={handleCancel} />
+            <CruiseLineForm cruiseLine={cruiseLine} onSuccess={handleSuccess} onCancel={handleCancel} />
           </CardContent>
         </Card>
-
-        {/* Galerie d'images */}
-        <CruiseImageGallery cruiseId={cruise.id} readonly={false} />
       </div>
     </AdminLayout>
   )

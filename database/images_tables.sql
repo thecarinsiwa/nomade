@@ -10,7 +10,7 @@
 USE nomade;
 
 -- ============================================================================
--- 1. IMAGES DES CHAMBRES (ROOM IMAGES)
+--zzzzzzz 1. IMAGES DES CHAMBRES (ROOM IMAGES)
 -- ============================================================================
 -- Permet d'afficher des photos détaillées de chaque chambre
 
@@ -82,7 +82,7 @@ CREATE TABLE IF NOT EXISTS activity_images (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ============================================================================
--- 4. IMAGES DES COMPAGNIES AÉRIENNES (AIRLINE IMAGES)
+--zzzzzz 4. IMAGES DES COMPAGNIES AÉRIENNES (AIRLINE IMAGES)
 -- ============================================================================
 -- Logos et images des compagnies aériennes
 
@@ -288,7 +288,7 @@ CREATE TABLE IF NOT EXISTS package_images (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ============================================================================
--- 13. IMAGES DES AÉROPORTS (AIRPORT IMAGES)
+--zzzz 13. IMAGES DES AÉROPORTS (AIRPORT IMAGES)
 -- ============================================================================
 -- Photos des aéroports pour l'aperçu des destinations
 
